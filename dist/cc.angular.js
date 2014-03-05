@@ -3050,7 +3050,7 @@ angular
                     var MASK_CLASS = 'cc-image-zoom__mask';
                     var ACTIVE_CLASS = 'cc-image-zoom__image--active';
                     var ZOOM_ANIM_DURATION = attrs.zoomAnimDuration ? attrs.zoomAnimDuration : 1000;
-                    
+
                     var body = ccImageZoomDomActors.$body = angular.element(document.body);
 
                     var $clone;
@@ -3291,7 +3291,7 @@ angular
                         }
 
                         var rect = cloneImage.parentElement.getBoundingClientRect();
-                        
+
                         touchMoved = false;
                         panning = false;
                         zooming = false;
@@ -3343,6 +3343,10 @@ angular
 
                         if (panning) {
                             if (currentState === stateEnum.SMALL || currentState === stateEnum.FULL_TO_SMALL) {
+                                return;
+                            }
+
+                            if ( ccImageZoomDomUtil.isSmallerOrEqualToViewport(current.width, current.height) ) {
                                 return;
                             }
 
@@ -3428,6 +3432,10 @@ angular
                             simpleClickZoom(event);
 
                             if (currentState === stateEnum.SMALL || currentState === stateEnum.FULL_TO_SMALL) {
+                                return;
+                            }
+
+                            if ( ccImageZoomDomUtil.isSmallerOrEqualToViewport(current.width, current.height) ) {
                                 return;
                             }
 
@@ -3554,6 +3562,10 @@ angular.module('sdk.directives.ccImageZoom')
         img.style.width = width + 'px';
         img.style.height = height + 'px';
         img.style.visibility = visible ? 'visible' : 'hidden';
+    };
+
+    self.isSmallerOrEqualToViewport = function (width, height) {
+        return width / window.innerWidth <= 1 || height / window.innerHeight <= 1;
     };
 
     return self;

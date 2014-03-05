@@ -42,5 +42,9 @@ angular.module('sdk.directives.ccImageZoom')
         img.style.visibility = visible ? 'visible' : 'hidden';
     };
 
+    self.isSmallerOrEqualToViewport = function (width, height) {
+        return width / window.innerWidth <= 1 || height / window.innerHeight <= 1;
+    };
+
     return self;
 });
