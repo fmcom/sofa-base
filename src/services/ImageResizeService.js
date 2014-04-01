@@ -1,6 +1,4 @@
-angular.module('sdk.filter.imageresize', ['sdk.services.configService']).filter('imageresize', ['configService',
-	// usage example
-	// product.getImage('small') | imageresize:{maxwidth:100,maxheight:100}
+angular.module('sdk.services.imageResizeService', ['sdk.services.configService']).factory('imageResizeService', ['configService',
     function(configService) {
         // TODO move to config service
         // TODO host image resizer properly
