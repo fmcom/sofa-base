@@ -3,6 +3,7 @@ angular.module('sdk.services.imageResizeService', ['sdk.services.configService']
         // TODO move to config service
         // TODO host image resizer properly
         var RESIZER_ENDPOINT = 'http://cdn.marder25.de/imageresizer/';
+        var RESIZER_ENABLED = true;
         // http://phpjs.org/functions/base64_encode/
         function base64_encode(data) {
             // http://kevin.vanzonneveld.net
@@ -55,7 +56,40 @@ angular.module('sdk.services.imageResizeService', ['sdk.services.configService']
 			return str.join("&");
 		};
 
+        // http://www.developerdrive.com/2013/08/turning-the-querystring-into-a-json-object-using-javascript/
+        function queryStringToObject(queryString) {            
+            var pairs = queryString.split('&');
+            var result = {};
+            pairs.forEach(function(pair) {
+                pair = pair.split('=');
+                result[pair[0]] = decodeURIComponent(pair[1] || '');
+            });
+            return JSON.parse(JSON.stringify(result));
+        };
+
+        var resizeUrlCache = {};
+
         return function(imageUrl, args) {
+            if (!RESIZER_ENABLED) {
+                return(imageUrl);
+            }
+
+            var cacheKey;
+            if (typeof args == 'string' || args instanceof String ) {
+                cacheKey = imageUrl + args;
+            }
+            else {
+                cacheKey = imageUrl + objectToQueryString(args);
+            }
+            if (resizeUrlCache[cacheKey]) {
+                return (resizeUrlCache[cacheKey]);
+            }
+
+            // no cache hit, decode string argument to object if required
+            if (typeof args == 'string' || args instanceof String ) {
+                args = queryStringToObject(args);
+            }
+
         	if (!args.hasOwnProperty('maxwidth') || !args.hasOwnProperty('maxheight')) {
         		throw new Error('maxwidth and maxheight are required parameters')
         	}
@@ -81,6 +115,8 @@ angular.module('sdk.services.imageResizeService', ['sdk.services.configService']
 
         	var encodedCall = base64_encode(objectToQueryString(fullArgs)).replace('/','_') + '.' + imageExt,
         		resizedImageUrl = RESIZER_ENDPOINT + encodedCall;
+
+            resizeUrlCache[cacheKey] = resizedImageUrl;
 
             return (resizedImageUrl);
         }
