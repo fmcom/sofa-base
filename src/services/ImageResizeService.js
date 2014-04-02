@@ -18,9 +18,9 @@ angular.module('sdk.services.imageResizeService', ['sdk.services.configService']
             // *     returns 1: 'S2V2aW4gdmFuIFpvbm5ldmVsZA=='
             // mozilla has this native
             // - but breaks in 2.0.0.12!
-            //if (typeof this.window['btoa'] === 'function') {
-            //    return btoa(data);
-            //}
+            if (typeof this.window['btoa'] === 'function') {
+                return btoa(data);
+            }
             var b64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
             var o1, o2, o3, h1, h2, h3, h4, bits, i = 0,
                 ac = 0,
@@ -67,9 +67,10 @@ angular.module('sdk.services.imageResizeService', ['sdk.services.configService']
             return JSON.parse(JSON.stringify(result));
         };
 
-        var resizeUrlCache = {};
+        var resizeUrlCache = {},
+            self = {};
 
-        return function(imageUrl, args) {
+        self.resize = function(imageUrl, args) {
             if (!RESIZER_ENABLED) {
                 return(imageUrl);
             }
@@ -104,7 +105,7 @@ angular.module('sdk.services.imageResizeService', ['sdk.services.configService']
         			url: imageUrl,
         			quality: 100 
     			},
-        		fullArgs = angular.extend(args, defaults),
+        		fullArgs = sofa.Util.extend(args, defaults),
         		imageExt = imageUrl.substring(imageUrl.lastIndexOf('.')+1);
 
         	// In case of retina display, need to fetch larger image
@@ -118,7 +119,9 @@ angular.module('sdk.services.imageResizeService', ['sdk.services.configService']
 
             resizeUrlCache[cacheKey] = resizedImageUrl;
 
-            return (resizedImageUrl);
+            return resizedImageUrl;
         }
+
+        return self;
     }
 ]);
