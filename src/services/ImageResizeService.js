@@ -76,18 +76,18 @@ angular.module('sdk.services.imageResizeService', ['sdk.services.configService']
             }
 
             var cacheKey;
-            if (typeof args == 'string' || args instanceof String ) {
+            if (sofa.Util.isString(args)) {
                 cacheKey = imageUrl + args;
             }
             else {
                 cacheKey = imageUrl + objectToQueryString(args);
             }
             if (resizeUrlCache[cacheKey]) {
-                return (resizeUrlCache[cacheKey]);
+                return resizeUrlCache[cacheKey];
             }
 
             // no cache hit, decode string argument to object if required
-            if (typeof args == 'string' || args instanceof String ) {
+            if (sofa.Util.isString(args)) {
                 args = queryStringToObject(args);
             }
 
