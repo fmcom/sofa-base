@@ -89,11 +89,12 @@ angular.module("src/directives/ccGoUpButton/cc-go-up-button.tpl.html", []).run([
 
 angular.module("src/directives/ccGoUpControl/cc-go-up-control.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("src/directives/ccGoUpControl/cc-go-up-control.tpl.html",
-    "    <cc-go-up-button class=\"cc-go-up-control\" ng-if=\"getParentLabel()\">\n" +
-    "        <i class=\"cc-go-up-control__icon\">\n" +
-    "        </i>\n" +
-    "        <span class=\"cc-go-up-control__text\" bo-text=\"getParentLabel()\"></span>\n" +
-    "    </cc-go-up-button>");
+    "<cc-go-up-button class=\"cc-go-up-control\" ng-if=\"getParentLabel()\">\n" +
+    "    <i class=\"cc-go-up-control__icon\">\n" +
+    "    </i>\n" +
+    "    <span class=\"cc-go-up-control__text\" bo-text=\"getParentLabel()\"></span>\n" +
+    "</cc-go-up-button>\n" +
+    "");
 }]);
 
 angular.module("src/directives/ccLoadingSpinner/ccloadingspinner.tpl.html", []).run(["$templateCache", function($templateCache) {
