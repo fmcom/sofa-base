@@ -1,8 +1,7 @@
 angular.module('sdk.services.imageResizeService', ['sdk.services.configService']).factory('imageResizeService', ['configService',
     function(configService) {
         // TODO move to config service
-        // TODO host image resizer properly
-        var RESIZER_ENDPOINT = 'http://cdn.marder25.de/imageresizer/';
+        var RESIZER_ENDPOINT = 'http://cdn1.couchcommerce.com/';
         var RESIZER_ENABLED = true;
         // http://phpjs.org/functions/base64_encode/
         function base64_encode(data) {
@@ -103,15 +102,16 @@ angular.module('sdk.services.imageResizeService', ['sdk.services.configService']
         	var defaults = { 
         			cmd: 'resize',
         			url: imageUrl,
-        			quality: 100 
+        			quality: 100,
+                    devicePixelRatio: window.devicePixelRatio
     			},
         		fullArgs = sofa.Util.extend(args, defaults),
         		imageExt = imageUrl.substring(imageUrl.lastIndexOf('.')+1);
 
         	// In case of retina display, need to fetch larger image
-        	if (window.devicePixelRatio > 1) {
-        		fullArgs.maxwidth *= window.devicePixelRatio;
-        		fullArgs.maxheight *= window.devicePixelRatio;
+        	if (args.devicePixelRatio > 1) {
+        		fullArgs.maxwidth *= args.devicePixelRatio;
+        		fullArgs.maxheight *= args.devicePixelRatio;
         	}
 
         	var encodedCall = base64_encode(objectToQueryString(fullArgs)).replace('/','_') + '.' + imageExt,
