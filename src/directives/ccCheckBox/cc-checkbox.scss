@@ -27,7 +27,7 @@
     width:1.5rem;
     height:1.5rem;
     line-height: 1.5rem;
-    color:#555;
+    color: cornflowerblue;
 }
 
 .cc-checkbox__input {
@@ -51,8 +51,7 @@
 
 .cc-checkbox__input:focus + .cc-checkbox__label:before {
     background-color:#fff;
-    border-color: lightblue;
-    box-shadow:0 0 2px 1px lightblue;
+    border-color: cornflowerblue;
 }
 
 .cc-checkbox__input:checked + .cc-checkbox__label:after {

@@ -1,4 +1,8 @@
 
+%sofa-form__item {
+    margin-top: .875rem;
+}
+
 %sofa-form-label {
     display: block;
     margin: .25rem;
@@ -25,7 +29,7 @@
     @extend %sofa-form-label;
 }
 
-%sofa-text-box {
+%sofa-text-field {
     display:inline-block;
     margin:0;
     vertical-align: top;
@@ -47,8 +51,7 @@
 
     &:focus {
         background-color:#fff;
-        border-color: lightblue;
-        box-shadow:0 0 2px 1px lightblue;
+        border-color: cornflowerblue;
     }
 
     &:disabled {

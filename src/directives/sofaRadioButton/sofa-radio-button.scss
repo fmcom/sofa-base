@@ -33,7 +33,7 @@
         width:.75rem;
         height:.75rem;
 
-        background:#555;
+        background: cornflowerblue;
         border-radius: 100%;
         opacity: 0;
     }
@@ -53,8 +53,7 @@
 
 .sofa-radio-button__input:focus + .sofa-radio-button__label:before {
     background-color:#fff;
-    border-color: lightblue;
-    box-shadow:0 0 2px 1px lightblue;
+    border-color: cornflowerblue;
 }
 
 .sofa-radio-button__input:checked + .sofa-radio-button__label:after {
