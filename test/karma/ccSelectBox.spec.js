@@ -230,6 +230,86 @@ describe('Unit: sofa-select-box', function () {
                 select = element.querySelector('select');
             }));
 
+            it('should handle null model without choose text in all cases', function () {
+
+                $scope.$apply(function () {
+                    $scope.vm.model = null;
+                    $scope.vm.data = [];
+                });
+
+                expect(select.value).toBe('');
+                expect(valueElement.innerHTML).toBe('');
+
+                $scope.$apply(function () {
+                    $scope.vm.data = [
+                        {
+                            title: 'test_title',
+                            value: 'test_value'
+                        }
+                    ];
+                });
+
+                expect(select.value).toBe(''); // fails
+                expect(valueElement.innerHTML).toBe('');
+
+                $scope.$apply(function () {
+                    $scope.vm.data = [
+                        {
+                            title: 'test_title',
+                            value: 'test_value'
+                        },
+                        {
+                            title: 'test_title_2',
+                            value: 'test_value_2'
+                        }
+                    ];
+                });
+
+                expect(select.value).toBe(''); // fails
+                expect(valueElement.innerHTML).toBe('');
+            });
+
+        });
+
+        describe('(object)', function () {
+            beforeEach(inject(function ($rootScope, $compile) {
+                $scope = $rootScope.$new();
+
+                vm = $scope.vm = {};
+
+                vm.model = {
+                    title: 'test_title',
+                    value: 'test_value'
+                };
+                vm.data = [
+                    {
+                        title: 'test_title',
+                        value: 'test_value'
+                    }
+                ];
+                vm.propertyName = 'test_property';
+                vm.chooseText = 'Choose';
+                vm.displayValueExp = 'title';
+
+                $element = angular.element(
+                    '<div>' +
+                        '<cc-select-box' +
+                        ' model="vm.model" ' +
+                        ' data="vm.data" ' +
+                        ' display-value-exp="vm.displayValueExp" ' +
+                        ' choose-text="vm.data.length > 1 ? vm.chooseText : \'\'" ' +
+                        ' property-name="{{vm.propertyName}}">' +
+                        ' </cc-select-box> ' +
+                    '</div>');
+
+                $compile($element)($scope);
+                $scope.$digest();
+
+                element = $element[0];
+                valueElement = getValueElement(element);
+                select = element.querySelector('select');
+            }));
+
             it('should display the selected value', function () {
                 expect(valueElement.innerHTML).toBe('test_title');
             });
@@ -239,7 +319,7 @@ describe('Unit: sofa-select-box', function () {
                 expect(value).toEqual(vm.model.title);
             });
 
-            it('it should restore the selected value if the dataset is updated with equal values', function() {
+            it('should restore the selected value if the dataset is updated with equal values', function() {
 
                 $scope.$apply(function () {
                     $scope.vm.data = [
@@ -252,6 +332,46 @@ describe('Unit: sofa-select-box', function () {
 
                 expect(select.value).toBe('0');
                 expect(valueElement.innerHTML).toBe('test_title');
+            });
+
+            it('should handle null model and conditional choose text in all cases', function() {
+
+                $scope.$apply(function () {
+                    $scope.vm.model = null;
+                    $scope.vm.data = [];
+                });
+
+                expect(select.value).toBe('');
+                expect(valueElement.innerHTML).toBe('');
+
+                $scope.$apply(function () {
+                    $scope.vm.data = [
+                        {
+                            title: 'test_title',
+                            value: 'test_value'
+                        }
+                    ];
+                });
+
+                expect(select.value).toBe(''); // fails
+                expect(valueElement.innerHTML).toBe('');
+
+                $scope.$apply(function () {
+
+                    $scope.vm.data = [
+                        {
+                            title: 'test_title',
+                            value: 'test_value'
+                        },
+                        {
+                            title: 'test_title_2',
+                            value: 'test_value_2'
+                        }
+                    ];
+                });
+
+                expect(select.value).toBe('');
+                expect(valueElement.innerHTML).toBe('Choose');
             });
 
         });
