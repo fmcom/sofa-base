@@ -1,8 +1,7 @@
-
 angular.module('sdk.directives.ccCheckBox', ['src/directives/ccCheckBox/cc-checkbox.tpl.html']);
 
 angular.module('sdk.directives.ccCheckBox')
-    .directive('ccCheckBox', function() {
+    .directive('ccCheckBox', function () {
 
         'use strict';
 
@@ -13,19 +12,37 @@ angular.module('sdk.directives.ccCheckBox')
             replace: true,
             scope: {
                 label: '=?',
-                value: '=?'
+                value: '=?',
+                preventClicks: '@?',
+                onClick: '=?'
             },
-            templateUrl: 'src/directives/ccCheckBox/cc-checkbox.tpl.html',
-            controller: function($scope) {
+            controller: function ($scope) {
                 return {
-                    getId: function(){
-                        return $scope.id;
+                    setOnClick: function (fn) {
+                        $scope.onClick = fn;
                     }
                 };
             },
-            link: function(scope, $element, attrs){
+            templateUrl: 'src/directives/ccCheckBox/cc-checkbox.tpl.html',
+            link: function (scope, $element) {
                 instanceCount++;
                 scope.id = instanceCount;
+
+                var clickHandler = function () {
+                    $element.bind('click', function (e) {
+                        if (scope.preventClicks && e.target.nodeName === scope.preventClicks.toUpperCase()) {
+                            e.preventDefault();
+                        }
+                        if (angular.isFunction(scope.onClick)) {
+                            scope.onClick(e);
+                        }
+                    });
+                };
+
+                if (scope.preventClicks || scope.onClick) {
+                    clickHandler();
+                }
+
             }
         };
     });
