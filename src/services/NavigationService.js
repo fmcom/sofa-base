@@ -26,18 +26,30 @@ angular
 
         self.navigateToContentPage = function (pageId) {
             self.navigateToUrl(urlConstructionService.createUrlForContentPage(pageId));
+            trackingService.trackAction('Visit Content Page', {
+                'Page': pageId
+            });
         };
 
         self.navigateToRootCategory = function(){
             self.navigateToUrl(urlConstructionService.createUrlForRootCategory());
+            trackingService.trackAction('Visit Special Page', {
+                'Page': 'Root Category'
+            });
         };
 
         self.navigateToCart = function(){
             self.navigateToUrl(urlConstructionService.createUrlForCart());
+            trackingService.trackAction('Visit Special Page', {
+                'Page': 'Cart'
+            });
         };
 
         self.navigateToCheckout = function(){
             self.navigateToUrl(urlConstructionService.createUrlForCheckout());
+            trackingService.trackAction('Visit Special Page', {
+                'Page': 'Checkout'
+            });
         };
 
         self.navigateToSummary = function(token){
@@ -45,12 +57,18 @@ angular
             trackingService.trackEvent({
                 category: 'pageView',
                 // No token here as it would flood the analytics
-                label: "/summary"
+                label: '/summary'
+            });
+            trackingService.trackAction('Visit Special Page', {
+                'Page': 'Summary'
             });
         };
 
         self.navigateToShippingCostsPage = function(){
             self.navigateToUrl(urlConstructionService.createUrlForShippingCostsPage());
+            trackingService.trackAction('Visit Special Page', {
+                'Page': 'Shipping Costs'
+            });
         };
 
         var navigateToParentCategory = function(currentCategoryUrlId){
